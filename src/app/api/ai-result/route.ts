@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
   await dbConnect();
 
   const { image, diseaseName, confidence } = await req.json();
+  const diseaseName = predict(image);
   const allowedSkinDiseases = ["eczema", "psoriasis", "acne", "rosacea", "melanoma"];
 
   if (!diseaseName || !allowedSkinDiseases.includes(diseaseName)) {
