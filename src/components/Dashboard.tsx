@@ -1,5 +1,5 @@
 // Dashboard.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -15,11 +15,14 @@ import RescheduleDialog from './RescheduleDialog';
 
 const Dashboard = () => {
   // State would be defined here in a real component
-  const selectedPatient = null; // This would be state
-  const showMedicationDialog = false; // This would be state
-  const setShowMedicationDialog = () => {}; // This would be a state setter
-  const showRescheduleDialog = false; // This would be state
-  const setShowRescheduleDialog = () => {}; // This would be a state setter
+  // const selectedPatient = null; // This would be state
+  const [medicalDialogOpen, setMediacalDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const patient = {
+    patientName: "John Doe",
+    appointmentType: "Online", // or "In-person"
+  };
   
   return (
     <div className="min-h-screen bg-slate-50">
@@ -75,19 +78,19 @@ const Dashboard = () => {
       </div>
       
       {/* Patient details side panel */}
-      <PatientDetails patient={selectedPatient} />
+      <PatientDetails patient={patient} />
       
       {/* Dialogs */}
       <PrescriptionDialog 
-        open={showMedicationDialog} 
-        onOpenChange={setShowMedicationDialog} 
-        patient={selectedPatient} 
+        open={medicalDialogOpen} 
+        onOpenChange={setMediacalDialogOpen} 
+        patient={patient} 
       />
       
       <RescheduleDialog 
-        open={showRescheduleDialog} 
-        onOpenChange={setShowRescheduleDialog} 
-        patient={selectedPatient} 
+        open={dialogOpen} 
+        onOpenChange={setDialogOpen} 
+        patient={patient} 
       />
     </div>
   );

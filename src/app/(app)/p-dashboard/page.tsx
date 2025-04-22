@@ -1,25 +1,17 @@
 'use client'
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, UploadCloud, CheckCircle, AlertCircle, Clock, Video } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
+import SkinAnalysis from "@/components/SkinAnalysis";
+import History from "@/components/History";
+import Appointments from "@/components/Appointments";
 
 export default function PatientDashboard() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [diagnosisResult, setDiagnosisResult] = useState(null);
-  const [appointmentType, setAppointmentType] = useState("online");
-  const [date, setDate] = useState(null);
+  // const [appointmentType, setAppointmentType] = useState("online");
+  // const [date, setDate] = useState(null);
 
   // Mock function to handle image upload
   const handleImageUpload = (e) => {
@@ -29,6 +21,7 @@ export default function PatientDashboard() {
       reader.onload = (e) => {
         setUploadedImage(e.target.result);
         // In a real app, you would send the image to your API here
+
         // For demo purposes, we'll simulate a diagnosis after 2 seconds
         setTimeout(() => {
           setDiagnosisResult({
@@ -101,7 +94,7 @@ export default function PatientDashboard() {
         </TabsList>
 
         <TabsContent value="diagnosis">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle>Skin Image Upload</CardTitle>
@@ -213,11 +206,12 @@ export default function PatientDashboard() {
                 )}
               </CardContent>
             </Card>
-          </div>
+          </div> */}
+          <SkinAnalysis/>
         </TabsContent>
 
         <TabsContent value="history">
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Diagnosis History</CardTitle>
               <CardDescription>
@@ -255,11 +249,12 @@ export default function PatientDashboard() {
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
+          <History/>
         </TabsContent>
 
         <TabsContent value="appointments">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle>Schedule an Appointment</CardTitle>
@@ -411,7 +406,8 @@ export default function PatientDashboard() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div> */}
+          <Appointments/>
         </TabsContent>
       </Tabs>
     </div>

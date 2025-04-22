@@ -96,7 +96,7 @@ export async function POST(request:Request) { // book an appointment
         const availableDays = await Doctor.findById(session.user.id).select("availability");
         const {date, doctorId, duration, reason, type} = await request.json();
 
-        if(!date || !doctorId || duration || type){
+        if(!date || !doctorId || !duration || !type){
             return ApiResponse.badRequest("please fill the required fields");
         }
         if(session.user.role !== "Patient"){

@@ -74,7 +74,7 @@ const AppointmentRequests = () => {
             </div>
             
             <div className="flex gap-2">
-              <Button size="sm" className="flex-1">Accept</Button>
+              {/* <Button size="sm" className="flex-1">Accept</Button> */}
               <Button variant="outline" size="sm" className="flex-1">Reschedule</Button>
               <Button variant="ghost" size="sm" className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50">
                 Decline
