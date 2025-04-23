@@ -40,10 +40,10 @@ export async function POST(req: NextRequest) {
     `;
 
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user || session.user.role !== "patient") {
-      return ApiResponse.unauthorized();
-    }
+    // const session = await getServerSession(authOptions);
+    // if (!session || !session.user || session.user.role !== "patient") {
+    //   return ApiResponse.unauthorized();
+    // }
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GOOGLE_GEMINI_API_KEY}`, {
       method: "POST",
@@ -78,13 +78,13 @@ export async function POST(req: NextRequest) {
     // const patient = await Patient.findById(session.user.id);
     // if (!patient) return ApiResponse.notFound("Patient not found");
 
-    await AiResult.create({
-      patient:session.user.id, // patient id
-      image,
-      diseaseName,
-      description: fullResponse,
-      confidence,
-    });
+    // await AiResult.create({
+    //   patient:session.user.id, // patient id
+    //   image,
+    //   diseaseName,
+    //   description: fullResponse,
+    //   confidence,
+    // });
 
     return new Response(JSON.stringify({ result: finalResponse }), {
       headers: { "Content-Type": "application/json" },

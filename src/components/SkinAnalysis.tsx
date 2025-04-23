@@ -5,38 +5,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadCloud, CheckCircle, AlertCircle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import axios from "axios";
 
 export default function SkinAnalysis() {
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [diagnosisResult, setDiagnosisResult] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [diagnosisResult, setDiagnosisResult] = useState({});
 
-  // Mock function to handle image upload
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUploadedImage(e.target.result);
-        // In a real app, you would send the image to your API here
-        // For demo purposes, we'll simulate a diagnosis after 2 seconds
-        setTimeout(() => {
-          setDiagnosisResult({
-            condition: "Atopic Dermatitis",
-            confidence: 92,
-            severity: "Moderate",
-            summary: "The AI analysis indicates moderate atopic dermatitis (eczema). The affected area shows typical signs including redness, dry patches, and mild scaling. This condition is chronic but manageable with proper treatment.",
-            recommendations: [
-              "Apply prescribed topical corticosteroids to reduce inflammation",
-              "Moisturize skin regularly with fragrance-free emollients",
-              "Avoid known triggers (specific soaps, detergents, stress)",
-              "Consider consulting with a dermatologist for personalized treatment"
-            ]
-          });
-        }, 2000);
-      };
-      reader.readAsDataURL(file);
+      setUploadedImage(URL.createObjectURL(file)); // Show image preview
+  
+      const formData = new FormData();
+      formData.append("file", file); // Flask expects 'file'
+  
+      try {
+        const response = await axios.post("http://localhost:5000/api/predict", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        const { predicted_class, confidence } = response.data;
+
+        const generatedData = await axios.post("/api/ai-result", {predicted_class, confidence})
+  
+        setDiagnosisResult({
+          condition: predicted_class,
+          confidence,
+          summary:generatedData
+        });
+      } catch (err) {
+        console.error("Prediction error:", err);
+        alert("Failed to get prediction from model.");
+      }
     }
   };
+  
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,7 +138,7 @@ export default function SkinAnalysis() {
                 <p className="text-sm text-slate-600">{diagnosisResult.summary}</p>
               </div>
 
-              <div>
+              {/* <div>
                 <h4 className="text-sm font-medium text-slate-700 mb-1">Recommendations</h4>
                 <ul className="text-sm text-slate-600 space-y-1">
                   {diagnosisResult.recommendations.map((rec, i) => (
@@ -142,7 +148,7 @@ export default function SkinAnalysis() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
 
               <div className="pt-4">
                 <Button className="w-full">Schedule Doctor Consultation</Button>

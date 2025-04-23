@@ -211,7 +211,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import axios from "axios"
 
-export default function Appointments() {
+export default async function Appointments() {
   const form = useForm<z.infer<typeof appointmentSchema>>({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
@@ -230,16 +230,20 @@ export default function Appointments() {
     console.log("response :", response);
   }
 
-  const upcomingAppointments = [
-    {
-      id: 1,
-      date: "Apr 25, 2025",
-      time: "2:00 PM",
-      doctor: "Dr. Sarah Williams",
-      type: "Online",
-      specialty: "Dermatologist"
-    }
-  ];
+  const date = new Date(Date.now());
+
+  const upcomingAppointments = await axios.get(`/api/appointment?date=${date}`);
+  console.log("upcoming appointments", upcomingAppointments);
+  // [
+  //   {
+  //     id: 1,
+  //     date: "Apr 25, 2025",
+  //     time: "2:00 PM",
+  //     doctor: "Dr. Sarah Williams",
+  //     type: "Online",
+  //     specialty: "Dermatologist"
+  //   }
+  // ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -9,8 +9,13 @@ import json
 app = Flask(__name__)
 CORS(app)
 
+import os
+
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "fixed_model.h5")
+print(f"Looking for model at: {os.path.abspath(MODEL_PATH)}")
+
 # Load model and class names once on startup
-MODEL_PATH = "model.h5"
+#MODEL_PATH = "skinalyze\\flaskServer"
 CLASS_NAMES_PATH = "class_names.json"
 IMG_HEIGHT = 224
 IMG_WIDTH = 224
